@@ -136,3 +136,5 @@ EMAIL_HOST_PASSWORD = 'akam dbmj ipqg hlly'
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# trisha here
