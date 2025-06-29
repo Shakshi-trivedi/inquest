@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Profile - INQUEST</title>
+
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon" />
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet" />
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet" />
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container position-relative d-flex align-items-center">
+      <a href="/index/" class="logo d-flex align-items-center me-auto">
+        <h1 class="sitename">INQUEST</h1><span>.</span>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/index/">Home</a></li>
+          <li><a href="/profile/" class="active">Profile</a></li>
+          <li><a href="/logout/">Logout</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header><!-- End Header -->
+
+  <main class="main">
+    <section class="section py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card shadow p-4">
+              <h2 class="mb-4 text-center">User Profile</h2>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <strong>Full Name:</strong>
+                  <p>{{ user.name }}</p>
+                </div>
+                <div class="col-md-6">
+                  <strong>Email:</strong>
+                  <p>{{ user.email }}</p>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <strong>Phone Number:</strong>
+                  <p>{{ user.phone }}</p>
+                </div>
+                <div class="col-md-6">
+                  <strong>Address:</strong>
+                  <p>{{ user.address }}</p>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <strong>Location:</strong>
+                  <p>{{ user.location }}</p>
+                </div>
+                <div class="col-md-6">
+                  <strong>Date of Birth:</strong>
+                  <p>{{ user.dob }}</p>
+                </div>
+              </div>
+              <div class="row mb-3">
+                  <div class="col-md-6">
+                    <strong>Active Plan:</strong>
+                    <p>{{ subscription.plan.name }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Plan Expires On:</strong>
+                    <p>{{ subscription.end_date_time|date:"Y-m-d" }}</p>
+                  </div>
+                  <div class="col-md-4">
+                    <strong>Remaining Credits:</strong>
+                    <p>{{ subscription.pending_credits }}</p>
+                  </div>
+              </div>
+              <div class="text-end mt-4">
+                <a href="/edit-profile/" class="btn btn-outline-primary">Edit Profile</a>
+              </div>
+              <div>
+                <form method="POST" action="/delete-account/" onsubmit="return confirm('Are you sure you want to delete your account?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main><!-- End Main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer dark-background">
+    <div class="container text-center py-4">
+      <p>© 2025 <strong>INQUEST</strong>. All Rights Reserved</p>
+      Designed by SHAKSHI and TRISHA
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+</html>

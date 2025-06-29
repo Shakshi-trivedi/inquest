@@ -1,0 +1,41 @@
+{% extends 'header_footer.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+  <section class="section" style="padding: 60px 0;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+          <div class="card shadow p-4">
+            <h2 class="mb-4 text-center">Upload PDF File</h2>
+            {% if pending_credits > 0 %}
+              <div class="alert alert-info text-center mb-3">
+                You have <strong>{{ pending_credits }}</strong> credits remaining.
+              </div>
+            {% else %}
+              <div class="alert alert-warning text-center mb-3">
+                <strong>You have no credits left!</strong> Please <a href="/pricing/">buy a plan</a> to continue.
+              </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" action="/upload_pdf/">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                <input type="file" name="resume">
+              </div>
+              <input type="hidden" name="user" value="{{ request.session.id }}">
+              <button type="submit" class="btn btn-primary">Upload</button>
+
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'header_footer.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interview Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="text-success">🎉 Interview Completed</h2>
+    <p class="lead">Here’s your performance summary:</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow p-4">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between">
+            <strong>Total Questions:</strong> <span>{{ total_questions }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <strong>Answered:</strong> <span>{{ answered }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <strong>Time Taken:</strong> <span>{{ time_taken }} seconds</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <strong>Confidence Score:</strong> <span>{{ confidence }}%</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between text-primary fw-bold">
+            <strong>Overall Performance:</strong> <span>{{ performance }}%</span>
+          </li>
+        </ul>
+
+        <div class="progress mt-4" style="height: 25px;">
+          <div class="progress-bar bg-success" role="progressbar" 
+               aria-valuenow="{{ performance }}" 
+               aria-valuemin="0" aria-valuemax="100">
+            {{ performance }}%
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <a href="/index/" class="btn btn-outline-primary">Back to Home</a>
+          <a href="/download-report/" class="btn btn-primary">Download Report</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
+
+{% endblock %} 
