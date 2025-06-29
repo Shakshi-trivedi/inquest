@@ -1,0 +1,46 @@
+{% extends 'header_footer.html' %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center mb-4">Interview History</h2>
+
+  {% for item in history_data %}
+  <div class="card mb-4 shadow">
+    <div class="card-header bg-primary text-white">
+      <strong>Resume:</strong> {{ item.resume.resume.name|cut:"backoffice_engine/userfiles/" }} <br>
+      <strong>Uploaded:</strong> {{ item.resume.created_at|date:"d M Y, H:i" }}
+      <a href="{{ item.resume.resume.url }}" class="btn btn-sm btn-light float-end" download>Download Resume</a>
+    </div>
+    <div class="card-body">
+      <h5>Questions & Answers</h5>
+      {% for qa in item.questions %}
+        <div class="mb-3">
+          <p><strong>Q:</strong> {{ qa.question }}</p>
+          <p><strong>A:</strong> {{ qa.answer }}</p>
+        </div>
+        <hr>
+      {% empty %}
+        <p>No interview questions found for this resume.</p>
+      {% endfor %}
+
+      {% if item.result %}
+        <h5 class="mt-4">Evaluation Summary</h5>
+        <ul>
+          <li><strong>Total Questions:</strong> {{ item.result.total_questions }}</li>
+          <li><strong>Confidence Level:</strong> {{ item.result.confidence_level }}</li>
+          <li><strong>Time Taken:</strong> {{ item.result.time_taken }} sec</li>
+          <li><strong>Overall Rating:</strong> {{ item.result.overall_rating }}</li>
+        </ul>
+      {% endif %}
+    </div>
+    <div class="text-center mb-3">
+      <a href="download-history/" class="btn btn-outline-primary " >
+      <i class="bi bi-download me-1 "></i> Download History as PDF
+      </a>
+    </div>
+  </div>
+  {% empty %}
+    <p class="text-center text-muted">No resume or interview history found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'header_footer.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main section">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+
+        <h2 class="mb-4 text-center">Give Us Your Feedback</h2>
+
+        <form method="POST" class="p-4 border rounded shadow-sm bg-light">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

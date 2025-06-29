@@ -1,0 +1,28 @@
+{% extends 'header_footer.html' %}
+{% load static %}
+{% block content %}
+
+  <main class="main">
+    <section class="section text-center py-5  text-white" data-aos="fade-up">
+      <div class="container">
+        <i class="bi bi-check-circle-fill display-1 text-success mb-4"></i>
+        <h2 class="mb-3">Payment Successful!</h2>
+        <p>Thank you for upgrading your plan. Your subscription is now active.</p>
+        <a href="/profile/" class="btn btn-primary me-2">View Profile</a>
+        <a href="/index/" class="btn btn-primary">Back to Home</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======= Footer ======= -->
+  
+
+  <!-- JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+</html>
+
+{% endblock %}

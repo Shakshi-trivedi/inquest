@@ -1,0 +1,105 @@
+{% extends 'header_footer.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block content %}
+
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title accent-background">
+        <div class="container d-lg-flex justify-content-between align-items-center">
+            <h1 class="mb-2 mb-lg-0">Pricing</h1>
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/index/">Home</a></li>
+                    <li class="current">Pricing</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing section">
+
+        <div class="container">
+
+            <div class="row gy-4">
+
+                {% for data in plan_details %}
+                <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="pricing-item featured">
+                        <p class="popular">Popular</p>
+                        <h3>{{data.name}}</h3>
+                        <p class="description">DESCRIPTION = {{data.description}}</p>
+                        <h4><sup>₹</sup>{{data.price}}<span> / month</span></h4>
+                        <a href="" class="cta-btn">Subscribe Now</a>
+                        <p class="text-center small">Duration Days = {{data.duration_days}}</p>
+                        <ul>
+                            <li><i class="bi bi-check"></i> <span>Credit = {{data.credits}}</span></li>
+                        </ul>
+                        {% if data.id == request.session.plan %}
+                            You already Subscribed
+                        {% else %}
+                            {% if request.session.id %}
+                                <form class="text-center border border-light p-5" action="/success/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="planid" value="{{ data.id }}">
+                                    <input type="hidden" name="userid" value="{{ request.session.id }}">
+                                    <input
+                                        type="hidden"
+                                        name="planid"
+                                        id="planid"
+                                        required
+                                        class="form-control mb-4"
+                                        placeholder="Name"
+                                        value="{{data.id}}"
+                                    />
+
+                                    <input
+                                        type="hidden"
+                                        name="userid"
+                                        id="userid"
+                                        required
+                                        class="form-control mb-4"
+                                        placeholder="Name"
+                                        value="{{request.session.id}}"
+                                    />
+
+                                    <!-- RAZORPAY INTEGRATION HERE -->
+                                    {% if data.price != 0 %}
+                                        <script
+                                            src="https://checkout.razorpay.com/v1/checkout.js"
+                                            data-key="rzp_test_XvmJgmAZJDg5Sv"
+                                            data-amount="{{data.price|mul:100}}"
+                                            data-currency="INR"
+                                            data-order_id="{{payment.id}}"
+                                            data-buttontext="Pay with Razorpay"
+                                            data-name="TEST PAYMENT"
+                                            data-url_root="https://eneqd3r9zrjok.x.pipedream.net/"
+                                            ,
+                                            data-description="Online decor Shop"
+                                            data-image="/client_static/assets/images/shop/logo2.png"
+                                            data-prefill.name="vedang"
+                                            data-prefill.email="inquestai12345@gmail.com"
+                                            data-theme.color="#F37254"
+                                        ></script>
+                                    {% endif %}
+                                </form>
+                            {% else %}
+                                <div class="text-center text-danger mt-2">
+                                    Please <a href="/login/" class="btn btn-outline-success">log in</a> to subscribe.
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </section><!-- /Pricing Section -->
+
+</main>
+
+{% endblock %}

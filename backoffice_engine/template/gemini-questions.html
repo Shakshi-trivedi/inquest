@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>AI Interview</title>
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5 text-center">
+  <h2 class="mb-4">🎤 Gemini AI Interview</h2>
+
+  <div class="card p-4 shadow">
+    <h4 id="question">Loading...</h4>
+    <input type="text" id="answer" class="form-control my-3" placeholder="Speak or type your answer">
+    
+    <div class="d-flex justify-content-center gap-2">
+      <button onclick="startListening()" class="btn btn-outline-primary">🎙️ Speak</button>
+      <button onclick="nextQuestion()" class="btn btn-success">Next</button>
+    </div>
+
+    <audio id="voice-player" class="mt-3" controls style="display: none;"></audio>
+  </div>
+</div>
+
+<!-- Injected questions from Django -->
+<script id="questions-data" type="application/json">
+  {{ questions_json|safe }}
+</script>
+
+<script>
+  const questions = JSON.parse(document.getElementById('questions-data').textContent || "[]");
+  let current = 0;
+
+  window.onload = () => {
+    if (questions.length > 0) {
+      showQuestion();
+    } else {
+      document.getElementById("question").innerText = "❌ No questions found. Please upload a resume.";
+    }
+  };
+
+  function showQuestion() {
+    document.getElementById("question").innerText = questions[current];
+    speakQuestion(questions[current]);
+  }
+
+  function speakQuestion(text) {
+    fetch(`/gemini-audio-question/?q=${encodeURIComponent(text)}`)
+      .then(res => res.blob())
+      .then(blob => {
+        const audio = document.getElementById("voice-player");
+        audio.src = URL.createObjectURL(blob);
+        audio.style.display = "block";
+        audio.play();
+      });
+  }
+
+  function startListening() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.start();
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("answer").value = transcript;
+    };
+  }
+
+
+
+  // function nextQuestion() {
+  //   const answer = document.getElementById("answer").value;
+  //   const question = questions[current];
+
+  //   fetch("/save-interview-answer/", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded",
+  //       "X-CSRFToken": getCookie("csrftoken"),
+  //     },
+  //     body: new URLSearchParams({ question, answer })
+  //   });
+
+  //   current++;
+  //   if (current < questions.length) {
+  //     document.getElementById("answer").value = '';
+  //     showQuestion();
+  //   } else {
+  //     alert("Interview complete!");
+  //     window.location.href = "/result/";
+  //   }
+  // }
+function nextQuestion() {
+  const answer = document.getElementById("answer").value.trim();
+  const question = questions[current];
+
+  if (!answer) {
+    alert("Please enter your answer before proceeding.");
+    return;
+  }
+
+  // Save the answer
+  fetch("/save-interview-answer/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    body: new URLSearchParams({ question, answer })
+  }).then(() => {
+    // Increment the index AFTER successful save
+    current++;
+
+    if (current < questions.length) {
+      document.getElementById("answer").value = '';
+      showQuestion();  // Now show the NEXT question
+    } else {
+      alert("Interview complete!");
+      window.location.href = "/result/";
+    }
+  }).catch(err => {
+    console.error("Failed to save answer", err);
+    alert("Error saving answer. Try again.");
+  });
+}
+
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+</body>
+</html>

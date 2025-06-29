@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Interview History</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { text-align: center; }
+    .qa-block { margin-bottom: 20px; }
+    .qa-block p { margin: 3px 0; }
+    .summary { margin-top: 10px; }
+    hr { border: 0; border-top: 1px solid #ccc; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h2>Interview History</h2>
+
+  {% for item in history_data %}
+    {% for qa in item.questions %}
+      <div class="qa-block">
+        <p><strong>Q:</strong> {{ qa.question }}</p>
+        <p><strong>A:</strong> {{ qa.answer }}</p>
+      </div>
+    {% empty %}
+      <p>No questions available.</p>
+    {% endfor %}
+
+    {% if item.result %}
+    <div class="summary">
+      <p><strong>Total Questions:</strong> {{ item.result.total_questions }}</p>
+      <p><strong>Confidence Level:</strong> {{ item.result.confidence_level }}</p>
+      <p><strong>Time Taken:</strong> {{ item.result.time_taken }} sec</p>
+      <p><strong>Overall Rating:</strong> {{ item.result.overall_rating }}</p>
+    </div>
+    {% endif %}
+    <hr>
+  {% endfor %}
+</body>
+</html>

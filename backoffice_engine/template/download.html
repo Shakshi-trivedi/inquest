@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 14px; }
+    .title { text-align: center; margin-bottom: 30px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background-color: #eee; }
+  </style>
+</head>
+<body>
+  <h2 class="title">Interview Report for {{ user.name }}</h2>
+
+  <p><strong>Total Questions:</strong> {{ total }}</p>
+  <p><strong>Answered:</strong> {{ answered }}</p>
+  <p><strong>Confidence:</strong> {{ confidence }}%</p>
+  <p><strong>Performance:</strong> {{ performance }}%</p>
+  <p><strong>Time Taken:</strong> {{ time_taken }} seconds</p>
+
+  <h3>Question & Answers</h3>
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Question</th>
+      <th>Answer</th>
+    </tr>
+    {% for q in questions %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ q.question }}</td>
+      <td>{{ q.answer }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
